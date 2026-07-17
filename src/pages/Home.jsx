@@ -3,8 +3,6 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Download, ExternalLink, Mail, MapPin, Send } from 'lucide-react';
 import { FaGithub, FaInstagram, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { SiLeetcode } from 'react-icons/si';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import useTypingText from '../hooks/useTypingText.js';
 import { profile, timeline } from '../data/profile.js';
 import { projects } from '../data/projects.js';
@@ -18,6 +16,8 @@ const sectionReveal = {
 
 export default function Home() {
   const reduceMotion = useReducedMotion();
+  const isMobile = useMediaQuery('(max-width: 760px)');
+  const calmMotion = reduceMotion || isMobile;
   const typed = useTypingText(['Full-Stack Developer', 'Web Developer', 'UI Designer', 'Computer Science Student']);
   const [filter, setFilter] = useState('All');
   const filteredProjects = useMemo(() => {
@@ -34,7 +34,7 @@ export default function Home() {
       <section id="about" className="classic-hero">
         <ParticleField />
         <div className="classic-hero-inner">
-          <motion.div initial={reduceMotion ? false : { opacity: 0, x: -70, rotate: -3 }} animate={{ opacity: 1, x: 0, rotate: -2 }} transition={{ duration: 0.9, ease: 'easeOut' }} className="hero-photo-wrap">
+          <motion.div initial={calmMotion ? false : { opacity: 0, x: -70, rotate: -3 }} animate={{ opacity: 1, x: 0, rotate: isMobile ? 0 : -2 }} transition={{ duration: calmMotion ? 0.25 : 0.9, ease: 'easeOut' }} className="hero-photo-wrap">
             <div className="hero-photo-shape" />
             <img src={profile.photo} alt="Anish Kumar" fetchPriority="high" decoding="async" />
           </motion.div>
@@ -65,7 +65,7 @@ export default function Home() {
         </a>
       </section>
 
-      <motion.section id="skills" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.section id="skills" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: true, amount: 0.18 }} transition={{ duration: calmMotion ? 0.25 : 0.75, ease: [0.22, 1, 0.36, 1] }}>
         <SectionTitle title="Technical Skills" subtitle="💡 Click a skill card below to filter matching projects instantly!" />
         <div className="classic-skills">
           {skillCategories.map((category) => (
@@ -78,11 +78,11 @@ export default function Home() {
                     <motion.button
                       type="button"
                       key={skill.name}
-                      initial={{ opacity: 0, y: 50, rotateX: -18, scale: 0.78 }}
+                      initial={calmMotion ? false : { opacity: 0, y: 50, rotateX: -18, scale: 0.78 }}
                       whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
                       viewport={{ once: true, amount: 0.35 }}
-                      transition={{ delay: index * 0.045, duration: 0.55, type: 'spring', stiffness: 115 }}
-                      whileHover={{ y: -14, rotate: -2, scale: 1.08 }}
+                      transition={{ delay: calmMotion ? 0 : index * 0.045, duration: calmMotion ? 0.18 : 0.55, type: calmMotion ? 'tween' : 'spring', stiffness: 115 }}
+                      whileHover={isMobile ? undefined : { y: -14, rotate: -2, scale: 1.08 }}
                       className="classic-skill-card"
                     >
                       {skill.logo ? <img src={skill.logo} alt={skill.name} /> : <Icon />}
@@ -96,7 +96,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="projects" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.section id="projects" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: true, amount: 0.12 }} transition={{ duration: calmMotion ? 0.25 : 0.75, ease: [0.22, 1, 0.36, 1] }}>
         <SectionTitle title="Featured Projects" />
         <div className="classic-filters">
           {filters.map((item) => (
@@ -108,16 +108,16 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="education" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.section id="education" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: true, amount: 0.12 }} transition={{ duration: calmMotion ? 0.25 : 0.75, ease: [0.22, 1, 0.36, 1] }}>
         <SectionTitle title="Education & Experience" />
         <div className="classic-timeline">
           {timeline.map((item, index) => (
             <motion.article
               key={item.title}
-              initial={{ opacity: 0, x: index % 2 ? -140 : 140, rotate: index % 2 ? -3 : 3, scale: 0.88 }}
+              initial={calmMotion ? false : { opacity: 0, x: index % 2 ? -140 : 140, rotate: index % 2 ? -3 : 3, scale: 0.88 }}
               whileInView={{ opacity: 1, x: 0, rotate: 0, scale: 1 }}
               viewport={{ once: true, margin: '-120px' }}
-              transition={{ duration: 0.7, type: 'spring', stiffness: 90 }}
+              transition={{ duration: calmMotion ? 0.2 : 0.7, type: calmMotion ? 'tween' : 'spring', stiffness: 90 }}
               className={`classic-timeline-item ${index % 2 ? 'left' : 'right'}`}
             >
               <span className="timeline-dot" />
@@ -132,7 +132,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="contact" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.section id="contact" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: true, amount: 0.15 }} transition={{ duration: calmMotion ? 0.25 : 0.75, ease: [0.22, 1, 0.36, 1] }}>
         <SectionTitle title="Get In Touch" />
         <div className="classic-contact">
           <div className="classic-contact-info">
@@ -339,22 +339,16 @@ function ClassicProjectCard({ project, index }) {
 
   return (
     <motion.article
-      initial={{ opacity: 0, x: index % 2 ? 90 : -90, y: 55, rotate: index % 2 ? 3 : -3, scale: 0.9 }}
+      initial={isMobile ? false : { opacity: 0, x: index % 2 ? 90 : -90, y: 55, rotate: index % 2 ? 3 : -3, scale: 0.9 }}
       whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.22 }}
-      transition={{ delay: index * 0.045, duration: 0.7, type: 'spring', stiffness: 90 }}
-      whileHover={{ y: -18, scale: 1.025, rotate: index % 2 ? -0.8 : 0.8 }}
+      transition={{ delay: isMobile ? 0 : index * 0.045, duration: isMobile ? 0.18 : 0.7, type: isMobile ? 'tween' : 'spring', stiffness: 90 }}
+      whileHover={isMobile ? undefined : { y: -18, scale: 1.025, rotate: index % 2 ? -0.8 : 0.8 }}
       className="classic-project-card"
     >
       <div className="browser-bar"><span /><span /><span /></div>
       <div className="classic-project-media">
-        <Swiper modules={[Navigation, Pagination, Autoplay]} pagination={{ clickable: true }} autoplay={isMobile ? false : { delay: 3200, disableOnInteraction: false, pauseOnMouseEnter: true }} loop={!isMobile} speed={isMobile ? 250 : 450}>
-          {project.images.map((src) => (
-            <SwiperSlide key={src}>
-              <img src={src} alt={`${project.title} screenshot`} loading="lazy" decoding="async" />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <img src={project.thumbnail || project.images[0]} alt={`${project.title} screenshot`} loading="lazy" decoding="async" />
       </div>
       <div className="classic-project-body">
         <h3>{project.title}</h3>

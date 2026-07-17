@@ -817,6 +817,7 @@ body {
   border-radius: 1rem;
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
   will-change: transform;
+  contain: layout paint;
 }
 
 .classic-project-card:hover {
@@ -846,6 +847,8 @@ body {
 .classic-project-media {
   height: 13.8rem;
   background: #0f172a;
+  overflow: hidden;
+  contain: strict;
 }
 
 .classic-project-media .swiper,
@@ -855,7 +858,10 @@ body {
 }
 
 .classic-project-media img {
+  display: block;
   object-fit: cover;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .classic-project-body {
@@ -1306,6 +1312,11 @@ body {
     overflow-x: hidden;
   }
 
+  .classic-section {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
+  }
+
   .one-page-shell::before {
     inset: -18%;
     filter: none;
@@ -1322,7 +1333,7 @@ body {
     background:
       radial-gradient(circle at 28% 16%, rgba(var(--brand-primary-rgb), 0.08), transparent 14rem),
       radial-gradient(circle at 78% 72%, rgba(var(--brand-mint-rgb), 0.05), transparent 13rem);
-    animation-duration: 32s;
+    animation: none;
     opacity: 0.58;
   }
 
@@ -1498,6 +1509,7 @@ body {
     height: auto;
     aspect-ratio: 16 / 10;
     max-height: 12rem;
+    contain: layout paint;
   }
 
   .classic-project-card:hover,
@@ -1608,7 +1620,18 @@ body {
     width: 3.15rem;
     height: 3.15rem;
     font-size: 1.55rem;
-    animation-duration: 4s;
+    animation: none;
+  }
+
+  .mouse i {
+    animation: none;
+  }
+
+  .classic-form input:focus,
+  .classic-form textarea:focus,
+  .form-field:focus {
+    animation: none;
+    transform: none;
   }
 
   .classic-footer-bottom {
