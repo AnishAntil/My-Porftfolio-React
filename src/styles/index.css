@@ -57,7 +57,7 @@ body {
   }
 
   .glass-card {
-    @apply rounded-2xl border border-white/10 bg-card/70 shadow-2xl shadow-black/20 backdrop-blur-xl;
+    @apply rounded-2xl border border-white/10 bg-card/80 shadow-2xl shadow-black/20;
   }
 
   .gradient-text {
@@ -94,7 +94,7 @@ body {
 }
 
 .form-field:focus {
-  animation: textboxPulse 1.8s ease-in-out infinite;
+  animation: textboxPulse 2.6s ease-in-out infinite;
   transform: translateY(-3px);
 }
 
@@ -109,7 +109,6 @@ body {
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(15, 23, 42, 0.72);
-  backdrop-filter: blur(12px);
 }
 
 .swiper-button-next::after,
@@ -239,26 +238,12 @@ body {
     radial-gradient(circle at 82% 18%, rgba(var(--brand-cyan-rgb), 0.14), transparent 20rem),
     radial-gradient(circle at 64% 72%, rgba(var(--brand-mint-rgb), 0.12), transparent 22rem),
     radial-gradient(circle at 32% 86%, rgba(251, 113, 133, 0.09), transparent 18rem);
-  filter: blur(18px);
-  opacity: 0.95;
-  will-change: transform, opacity;
-  animation: auroraDrift 18s ease-in-out infinite alternate;
+  opacity: 0.58;
+  animation: auroraDrift 34s ease-in-out infinite alternate;
 }
 
 .one-page-shell::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(120deg, transparent 0 34%, rgba(var(--brand-primary-rgb), 0.055) 44%, rgba(var(--brand-mint-rgb), 0.06) 50%, transparent 62%),
-    radial-gradient(circle at 50% 50%, transparent 0 38%, rgba(var(--brand-cyan-rgb), 0.05) 39%, transparent 42%);
-  opacity: 0.72;
-  mix-blend-mode: screen;
-  transform: translate3d(-12%, 0, 0);
-  will-change: transform, opacity;
-  animation: backgroundSweep 22s linear infinite;
+  content: none;
 }
 
 .one-page-shell > * {
@@ -346,10 +331,9 @@ body {
     radial-gradient(circle at var(--glow-x, 18%) var(--glow-y, 24%), rgba(var(--brand-primary-rgb), 0.13), transparent 24rem),
     radial-gradient(circle at calc(100% - var(--glow-x, 18%)) 72%, rgba(var(--brand-mint-rgb), 0.08), transparent 22rem),
     linear-gradient(110deg, transparent 0 38%, rgba(var(--brand-cyan-rgb), 0.045) 48%, transparent 58%);
-  opacity: 0.95;
+  opacity: 0.76;
   transform: translate3d(-1.5%, 0, 0);
-  will-change: transform, opacity;
-  animation: sectionGlow 16s ease-in-out infinite alternate;
+  animation: sectionGlow 32s ease-in-out infinite alternate;
 }
 
 .classic-section:nth-of-type(2n)::after {
@@ -458,7 +442,6 @@ body {
   border: 1px solid rgba(var(--brand-primary-rgb), 0.22);
   background: rgba(30, 41, 59, 0.78);
   box-shadow: 0 26px 80px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(18px);
 }
 
 .terminal-card {
@@ -567,7 +550,7 @@ body {
 .classic-btn:hover,
 .classic-social a:hover,
 .classic-info-card:hover {
-  transform: translateY(-10px) scale(1.04);
+  transform: translateY(-6px) scale(1.025);
   filter: drop-shadow(0 20px 35px rgba(var(--brand-primary-rgb), 0.22));
 }
 
@@ -698,13 +681,6 @@ body {
   scroll-margin-top: 5.5rem;
 }
 
-@supports (content-visibility: auto) {
-  .classic-section {
-    content-visibility: auto;
-    contain-intrinsic-size: 900px;
-  }
-}
-
 .classic-section-title {
   margin-inline: auto;
   margin-bottom: 3.2rem;
@@ -816,7 +792,6 @@ body {
   overflow: hidden;
   border-radius: 1rem;
   transition: box-shadow 0.25s ease, border-color 0.25s ease;
-  will-change: transform;
   contain: layout paint;
 }
 
@@ -848,10 +823,9 @@ body {
   height: 13.8rem;
   background: #0f172a;
   overflow: hidden;
-  contain: strict;
+  contain: layout paint;
 }
 
-.classic-project-media .swiper,
 .classic-project-media img {
   width: 100%;
   height: 100%;
@@ -1076,7 +1050,7 @@ body {
   background: rgba(15, 23, 42, 0.94);
   box-shadow: 0 0 0 4px rgba(var(--brand-primary-rgb), 0.12), 0 18px 42px rgba(var(--brand-deep-rgb), 0.2);
   transform: translateY(-4px) scale(1.01);
-  animation: textboxPulse 1.8s ease-in-out infinite;
+  animation: textboxPulse 2.6s ease-in-out infinite;
 }
 
 @keyframes textboxPulse {
@@ -1228,7 +1202,7 @@ body {
   font-size: 1.8rem;
   box-shadow: 0 16px 38px rgba(37, 211, 102, 0.38);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  animation: whatsappFloat 2.5s ease-in-out infinite;
+  animation: whatsappFloat 3.8s ease-in-out infinite;
 }
 
 .floating-whatsapp:hover {
@@ -1246,7 +1220,7 @@ body {
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  opacity: 0.8;
+  opacity: 0.48;
 }
 
 .particle-field span {
@@ -1258,7 +1232,7 @@ body {
   border-radius: 50%;
   background: rgba(var(--brand-primary-rgb), 0.55);
   box-shadow: 0 0 0 1px rgba(var(--brand-primary-rgb), 0.08), 58px 42px 0 rgba(148, 163, 184, 0.12);
-  animation: drift calc(8s + var(--i) * 0.3s) ease-in-out infinite alternate;
+  animation: drift calc(14s + var(--i) * 0.45s) ease-in-out infinite alternate;
 }
 
 .particle-field span::after {

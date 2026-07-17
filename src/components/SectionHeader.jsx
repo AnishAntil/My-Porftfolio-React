@@ -5,8 +5,8 @@ export default function SectionHeader({ eyebrow, title, description, align = 'ce
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.5 }}
+      viewport={{ once: false, margin: '-80px' }}
+      transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
       className={`mx-auto mb-12 max-w-3xl ${align === 'center' ? 'text-center' : 'text-left'}`}
     >
       {eyebrow && <p className="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-accent">{eyebrow}</p>}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Download, ExternalLink, Mail, MapPin, Send } from 'lucide-react';
 import { FaGithub, FaInstagram, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
@@ -9,9 +9,10 @@ import { projects } from '../data/projects.js';
 import { skillCategories } from '../data/skills.js';
 
 const filters = ['All', 'Web Apps', 'Desktop', 'UI/UX'];
+const smoothEase = [0.16, 1, 0.3, 1];
 const sectionReveal = {
-  hidden: { opacity: 0, y: 70, scale: 0.97 },
-  visible: { opacity: 1, y: 0, scale: 1 },
+  hidden: { opacity: 0, y: 32 },
+  visible: { opacity: 1, y: 0 },
 };
 
 export default function Home() {
@@ -34,7 +35,7 @@ export default function Home() {
       <section id="about" className="classic-hero">
         <ParticleField />
         <div className="classic-hero-inner">
-          <motion.div initial={calmMotion ? false : { opacity: 0, x: -70, rotate: -3 }} animate={{ opacity: 1, x: 0, rotate: isMobile ? 0 : -2 }} transition={{ duration: calmMotion ? 0.25 : 0.9, ease: 'easeOut' }} className="hero-photo-wrap">
+          <motion.div initial={calmMotion ? false : { opacity: 0, x: -36, rotate: -1.2 }} animate={{ opacity: 1, x: 0, rotate: isMobile ? 0 : -1.2 }} transition={{ duration: calmMotion ? 0.22 : 0.8, ease: smoothEase }} className="hero-photo-wrap">
             <div className="hero-photo-shape" />
             <img src={profile.photo} alt="Anish Kumar" fetchPriority="high" decoding="async" />
           </motion.div>
@@ -49,14 +50,14 @@ export default function Home() {
               Innovative Computer Science student with experience in building responsive web applications using modern technologies. Passionate about creating clean, efficient, and user-friendly digital experiences.
             </motion.p>
 
-            <TerminalCard />
+            <TerminalCard calmMotion={calmMotion} />
 
             <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.48 }} className="classic-actions">
               <a href={profile.resume} download="Anish_Kumar_Resume.pdf" className="classic-btn primary"><Download size={18} /> Download Resume</a>
               <a href="#contact" className="classic-btn secondary"><Mail size={18} /> Let's Connect</a>
             </motion.div>
             <SocialRail />
-            <LeetCodeMetrics />
+            <LeetCodeMetrics calmMotion={calmMotion} />
           </div>
         </div>
         <a href="#skills" className="scroll-down" aria-label="Scroll to skills">
@@ -65,8 +66,8 @@ export default function Home() {
         </a>
       </section>
 
-      <motion.section id="skills" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: true, amount: 0.18 }} transition={{ duration: calmMotion ? 0.25 : 0.75, ease: [0.22, 1, 0.36, 1] }}>
-        <SectionTitle title="Technical Skills" subtitle="💡 Click a skill card below to filter matching projects instantly!" />
+      <motion.section id="skills" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: 0.16 }} transition={{ duration: calmMotion ? 0.22 : 0.72, ease: smoothEase }}>
+        <SectionTitle title="Technical Skills" subtitle="💡 Click a skill card below to filter matching projects instantly!" calmMotion={calmMotion} />
         <div className="classic-skills">
           {skillCategories.map((category) => (
             <div key={category.name} className="classic-skill-group">
@@ -78,11 +79,11 @@ export default function Home() {
                     <motion.button
                       type="button"
                       key={skill.name}
-                      initial={calmMotion ? false : { opacity: 0, y: 50, rotateX: -18, scale: 0.78 }}
-                      whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-                      viewport={{ once: true, amount: 0.35 }}
-                      transition={{ delay: calmMotion ? 0 : index * 0.045, duration: calmMotion ? 0.18 : 0.55, type: calmMotion ? 'tween' : 'spring', stiffness: 115 }}
-                      whileHover={isMobile ? undefined : { y: -14, rotate: -2, scale: 1.08 }}
+                      initial={calmMotion ? false : { opacity: 0, y: 22, scale: 0.98 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                      viewport={{ once: false, amount: 0.28 }}
+                      transition={{ delay: calmMotion ? 0 : Math.min(index * 0.025, 0.18), duration: calmMotion ? 0.16 : 0.48, ease: smoothEase }}
+                      whileHover={isMobile ? undefined : { y: -7, scale: 1.025 }}
                       className="classic-skill-card"
                     >
                       {skill.logo ? <img src={skill.logo} alt={skill.name} /> : <Icon />}
@@ -96,8 +97,8 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="projects" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: true, amount: 0.12 }} transition={{ duration: calmMotion ? 0.25 : 0.75, ease: [0.22, 1, 0.36, 1] }}>
-        <SectionTitle title="Featured Projects" />
+      <motion.section id="projects" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: 0.12 }} transition={{ duration: calmMotion ? 0.22 : 0.78, ease: smoothEase }}>
+        <SectionTitle title="Featured Projects" calmMotion={calmMotion} />
         <div className="classic-filters">
           {filters.map((item) => (
             <button key={item} onClick={() => setFilter(item)} className={filter === item ? 'active' : ''}>{item}</button>
@@ -108,16 +109,16 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="education" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: true, amount: 0.12 }} transition={{ duration: calmMotion ? 0.25 : 0.75, ease: [0.22, 1, 0.36, 1] }}>
-        <SectionTitle title="Education & Experience" />
+      <motion.section id="education" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: 0.12 }} transition={{ duration: calmMotion ? 0.22 : 0.78, ease: smoothEase }}>
+        <SectionTitle title="Education & Experience" calmMotion={calmMotion} />
         <div className="classic-timeline">
           {timeline.map((item, index) => (
             <motion.article
               key={item.title}
-              initial={calmMotion ? false : { opacity: 0, x: index % 2 ? -140 : 140, rotate: index % 2 ? -3 : 3, scale: 0.88 }}
-              whileInView={{ opacity: 1, x: 0, rotate: 0, scale: 1 }}
-              viewport={{ once: true, margin: '-120px' }}
-              transition={{ duration: calmMotion ? 0.2 : 0.7, type: calmMotion ? 'tween' : 'spring', stiffness: 90 }}
+              initial={calmMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: false, margin: '-90px' }}
+              transition={{ delay: calmMotion ? 0 : Math.min(index * 0.055, 0.16), duration: calmMotion ? 0.18 : 0.72, ease: smoothEase }}
               className={`classic-timeline-item ${index % 2 ? 'left' : 'right'}`}
             >
               <span className="timeline-dot" />
@@ -132,8 +133,8 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="contact" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: true, amount: 0.15 }} transition={{ duration: calmMotion ? 0.25 : 0.75, ease: [0.22, 1, 0.36, 1] }}>
-        <SectionTitle title="Get In Touch" />
+      <motion.section id="contact" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: 0.15 }} transition={{ duration: calmMotion ? 0.22 : 0.78, ease: smoothEase }}>
+        <SectionTitle title="Get In Touch" calmMotion={calmMotion} />
         <div className="classic-contact">
           <div className="classic-contact-info">
             <InfoCard icon={<Mail />} title="Email" text={profile.email} />
@@ -154,23 +155,32 @@ export default function Home() {
 }
 
 function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
+  const barRef = useRef(null);
 
   useEffect(() => {
+    let frame = 0;
     const update = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+        if (barRef.current) {
+          barRef.current.style.transform = `scaleX(${progress})`;
+        }
+        frame = 0;
+      });
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
     return () => {
+      if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', update);
       window.removeEventListener('resize', update);
     };
   }, []);
 
-  return <div className="classic-scroll-progress" style={{ transform: `scaleX(${progress})` }} />;
+  return <div ref={barRef} className="classic-scroll-progress" />;
 }
 
 function ParticleField() {
@@ -181,7 +191,7 @@ function ParticleField() {
   );
 }
 
-function TerminalCard() {
+function TerminalCard({ calmMotion = false }) {
   const [input, setInput] = useState('');
   const [lines, setLines] = useState([
     'Welcome to the interactive shell. Type help to see available commands. Hint: try typing dev on your keyboard anywhere!',
@@ -211,7 +221,7 @@ function TerminalCard() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="terminal-card">
+    <motion.div initial={calmMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: calmMotion ? 0 : 0.34, duration: 0.58, ease: smoothEase }} className="terminal-card">
       <div className="terminal-head">
         <span className="dot red" />
         <span className="dot yellow" />
@@ -242,7 +252,7 @@ function SocialRail() {
   );
 }
 
-function LeetCodeMetrics() {
+function LeetCodeMetrics({ calmMotion = false }) {
   const [stats, setStats] = useState({
     total: 667,
     easy: 173,
@@ -300,7 +310,7 @@ function LeetCodeMetrics() {
   }, []);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.56 }} className="leetcode-card">
+    <motion.div initial={calmMotion ? false : { opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: calmMotion ? 0 : 0.46, duration: 0.6, ease: smoothEase }} className="leetcode-card">
       <div className="leetcode-head">
         <div><SiLeetcode /> <span>LeetCode Metrics Engine</span></div>
         <a href={profile.socials.leetcode} target="_blank" rel="noreferrer">Live Profile <ExternalLink size={17} /></a>
@@ -325,9 +335,9 @@ function Metric({ label, value, status, tone = '' }) {
   );
 }
 
-function SectionTitle({ title, subtitle }) {
+function SectionTitle({ title, subtitle, calmMotion = false }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 45, scale: 0.92 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.6 }} transition={{ duration: 0.65, type: 'spring', stiffness: 105 }} className="classic-section-title">
+    <motion.div initial={calmMotion ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.45 }} transition={{ duration: calmMotion ? 0.18 : 0.58, ease: smoothEase }} className="classic-section-title">
       <h2>{title}</h2>
       {subtitle && <p>{subtitle}</p>}
     </motion.div>
@@ -339,11 +349,11 @@ function ClassicProjectCard({ project, index }) {
 
   return (
     <motion.article
-      initial={isMobile ? false : { opacity: 0, x: index % 2 ? 90 : -90, y: 55, rotate: index % 2 ? 3 : -3, scale: 0.9 }}
-      whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.22 }}
-      transition={{ delay: isMobile ? 0 : index * 0.045, duration: isMobile ? 0.18 : 0.7, type: isMobile ? 'tween' : 'spring', stiffness: 90 }}
-      whileHover={isMobile ? undefined : { y: -18, scale: 1.025, rotate: index % 2 ? -0.8 : 0.8 }}
+      initial={isMobile ? false : { opacity: 0, y: 30, scale: 0.985 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ delay: isMobile ? 0 : Math.min(index * 0.045, 0.16), duration: isMobile ? 0.18 : 0.76, ease: smoothEase }}
+      whileHover={isMobile ? undefined : { y: -8, scale: 1.01 }}
       className="classic-project-card"
     >
       <div className="browser-bar"><span /><span /><span /></div>

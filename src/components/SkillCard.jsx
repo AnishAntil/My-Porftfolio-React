@@ -5,10 +5,11 @@ export default function SkillCard({ skill }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.92 }}
+      initial={{ opacity: 0, y: 16, scale: 0.98 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -6, scale: 1.02 }}
+      viewport={{ once: false, amount: 0.25 }}
+      whileHover={{ y: -5, scale: 1.015 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="glass-card p-5"
     >
       <div className="flex items-center gap-4">
@@ -21,7 +22,7 @@ export default function SkillCard({ skill }) {
         </div>
       </div>
       <div className="mt-5 h-2 overflow-hidden rounded-full bg-slate-800">
-        <motion.div initial={{ width: 0 }} whileInView={{ width: `${skill.level}%` }} viewport={{ once: true }} transition={{ duration: 0.9 }} className="h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent" />
+        <motion.div initial={{ width: 0 }} whileInView={{ width: `${skill.level}%` }} viewport={{ once: false }} transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }} className="h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent" />
       </div>
     </motion.div>
   );

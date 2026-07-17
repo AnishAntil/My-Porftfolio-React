@@ -11,7 +11,7 @@ export default function Certificates() {
         <SectionHeader eyebrow="Certificates" title="Proof of continued learning." description="A clean certificate gallery for recruiter scanning and interview conversation starters." />
         <div className="grid gap-6 md:grid-cols-2">
           {certificates.map((cert, index) => (
-            <motion.div key={cert.title} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="glass-card p-7">
+            <motion.div key={cert.title} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.25 }} transition={{ delay: Math.min(index * 0.04, 0.14), duration: 0.52, ease: [0.16, 1, 0.3, 1] }} className="glass-card p-7">
               <div className="flex items-start gap-5">
                 <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-white">
                   <Award />

@@ -1,28 +1,22 @@
 import { motion } from 'framer-motion';
 import { ExternalLink, Layers } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 export default function ProjectCard({ project, featured = false }) {
+  const preview = project.thumbnail || project.images[0];
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.45 }}
+      viewport={{ once: false, margin: '-80px' }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.56, ease: [0.16, 1, 0.3, 1] }}
       className={`glass-card overflow-hidden ${featured ? 'lg:grid lg:grid-cols-[1.1fr_0.9fr]' : ''}`}
       id={project.id}
     >
       <div className="project-media">
-        <Swiper modules={[Navigation, Pagination, Autoplay]} navigation pagination={{ clickable: true }} autoplay={{ delay: 2800, disableOnInteraction: false }} loop className="h-full">
-          {project.images.map((src) => (
-            <SwiperSlide key={src}>
-              <img src={src} alt={`${project.title} screenshot`} className="h-full w-full object-cover" loading="lazy" />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <img src={preview} alt={`${project.title} screenshot`} className="h-full w-full object-cover" loading="lazy" decoding="async" />
       </div>
       <div className="flex flex-col gap-5 p-6 md:p-8">
         <div>
