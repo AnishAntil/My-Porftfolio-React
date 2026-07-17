@@ -1,23 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ExternalLink, Layers } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
 export default function ProjectCard({ project, featured = false }) {
   const [activeImage, setActiveImage] = useState(0);
-  const images = project.images?.length ? project.images : [project.thumbnail];
+  const images = useMemo(() => (project.images?.length ? project.images : [project.thumbnail]), [project.images, project.thumbnail]);
   const hasGallery = images.length > 1;
   const moveImage = (direction) => {
     setActiveImage((current) => (current + direction + images.length) % images.length);
   };
 
+  useEffect(() => {
+    if (!hasGallery) return;
+    const nextSources = [
+      images[(activeImage + 1) % images.length],
+      images[(activeImage - 1 + images.length) % images.length],
+    ];
+    nextSources.forEach((src) => {
+      const image = new Image();
+      image.decoding = 'async';
+      image.src = src;
+    });
+  }, [activeImage, hasGallery, images]);
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 36, scale: 0.96 }}
+      initial={{ opacity: 0, y: 54, scale: 0.92 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: false, margin: '-80px' }}
-      whileHover={{ y: -8, scale: 1.01 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -12, scale: 1.018 }}
+      transition={{ duration: 0.86, ease: [0.16, 1, 0.3, 1] }}
       className={`glass-card overflow-hidden ${featured ? 'lg:grid lg:grid-cols-[1.1fr_0.9fr]' : ''}`}
       id={project.id}
     >
@@ -27,11 +40,12 @@ export default function ProjectCard({ project, featured = false }) {
           src={images[activeImage]}
           alt={`${project.title} screenshot ${activeImage + 1}`}
           className="h-full w-full object-cover"
-          loading="lazy"
+          loading={featured ? 'eager' : 'lazy'}
+          fetchPriority={featured ? 'high' : 'auto'}
           decoding="async"
-          initial={{ opacity: 0, scale: 1.025 }}
+          initial={{ opacity: 0, scale: 1.04 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.44, ease: [0.16, 1, 0.3, 1] }}
         />
         {hasGallery && (
           <>

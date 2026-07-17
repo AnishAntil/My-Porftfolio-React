@@ -11,16 +11,17 @@ import { skillCategories } from '../data/skills.js';
 const filters = ['All', 'Web Apps', 'Desktop', 'UI/UX'];
 const smoothEase = [0.16, 1, 0.3, 1];
 const sectionReveal = {
-  hidden: { opacity: 0, y: 46, scale: 0.96 },
-  visible: { opacity: 1, y: 0, scale: 1 },
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
 };
 
 export default function Home() {
   const reduceMotion = useReducedMotion();
   const isMobile = useMediaQuery('(max-width: 760px)');
-  const calmMotion = reduceMotion || isMobile;
+  const calmMotion = reduceMotion;
   const typed = useTypingText(['Full-Stack Developer', 'Web Developer', 'UI Designer', 'Computer Science Student']);
   const [filter, setFilter] = useState('All');
+  useProjectImageWarmup(projects);
   const filteredProjects = useMemo(() => {
     if (filter === 'All') return projects;
     if (filter === 'Desktop') return projects.filter((project) => project.title.includes('Notes') || project.title.includes('Break'));
@@ -66,7 +67,7 @@ export default function Home() {
         </a>
       </section>
 
-      <motion.section id="skills" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: 0.16 }} transition={{ duration: calmMotion ? 0.22 : 0.72, ease: smoothEase }}>
+      <motion.section id="skills" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: isMobile ? 0.08 : 0.16 }} transition={{ duration: calmMotion ? 0.22 : isMobile ? 0.48 : 0.92, ease: smoothEase }}>
         <SectionTitle title="Technical Skills" subtitle="💡 Click a skill card below to filter matching projects instantly!" calmMotion={calmMotion} />
         <div className="classic-skills">
           {skillCategories.map((category) => (
@@ -79,11 +80,11 @@ export default function Home() {
                     <motion.button
                       type="button"
                       key={skill.name}
-                      initial={calmMotion ? false : { opacity: 0, y: 34, scale: 0.92 }}
+                      initial={calmMotion ? false : { opacity: 0, y: isMobile ? 22 : 48, scale: isMobile ? 0.96 : 0.88 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                      viewport={{ once: false, amount: 0.28 }}
-                      transition={{ delay: calmMotion ? 0 : Math.min(index * 0.035, 0.24), duration: calmMotion ? 0.16 : 0.62, ease: smoothEase }}
-                      whileHover={isMobile ? undefined : { y: -10, scale: 1.045 }}
+                      viewport={{ once: false, amount: isMobile ? 0.18 : 0.28 }}
+                      transition={{ delay: calmMotion || isMobile ? 0 : Math.min(index * 0.03, 0.18), duration: calmMotion ? 0.16 : isMobile ? 0.34 : 0.72, ease: smoothEase }}
+                      whileHover={isMobile ? undefined : { y: -12, scale: 1.055 }}
                       className="classic-skill-card"
                     >
                       {skill.logo ? <img src={skill.logo} alt={skill.name} /> : <Icon />}
@@ -97,7 +98,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="projects" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: 0.12 }} transition={{ duration: calmMotion ? 0.22 : 0.78, ease: smoothEase }}>
+      <motion.section id="projects" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: isMobile ? 0.06 : 0.12 }} transition={{ duration: calmMotion ? 0.22 : isMobile ? 0.46 : 0.94, ease: smoothEase }}>
         <SectionTitle title="Featured Projects" calmMotion={calmMotion} />
         <div className="classic-filters">
           {filters.map((item) => (
@@ -109,16 +110,16 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="education" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: 0.12 }} transition={{ duration: calmMotion ? 0.22 : 0.78, ease: smoothEase }}>
+      <motion.section id="education" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: isMobile ? 0.06 : 0.12 }} transition={{ duration: calmMotion ? 0.22 : isMobile ? 0.46 : 0.94, ease: smoothEase }}>
         <SectionTitle title="Education & Experience" calmMotion={calmMotion} />
         <div className="classic-timeline">
           {timeline.map((item, index) => (
             <motion.article
               key={item.title}
-              initial={calmMotion ? false : { opacity: 0, x: index % 2 ? -46 : 46, y: 34, scale: 0.94 }}
+              initial={calmMotion ? false : { opacity: 0, x: isMobile ? 0 : index % 2 ? -76 : 76, y: isMobile ? 24 : 48, scale: isMobile ? 0.97 : 0.9 }}
               whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-              viewport={{ once: false, margin: '-90px' }}
-              transition={{ delay: calmMotion ? 0 : Math.min(index * 0.065, 0.2), duration: calmMotion ? 0.18 : 0.82, ease: smoothEase }}
+              viewport={{ once: false, margin: isMobile ? '-40px' : '-90px' }}
+              transition={{ delay: calmMotion || isMobile ? 0 : Math.min(index * 0.06, 0.18), duration: calmMotion ? 0.18 : isMobile ? 0.38 : 0.88, ease: smoothEase }}
               className={`classic-timeline-item ${index % 2 ? 'left' : 'right'}`}
             >
               <span className="timeline-dot" />
@@ -133,7 +134,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="contact" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: 0.15 }} transition={{ duration: calmMotion ? 0.22 : 0.78, ease: smoothEase }}>
+      <motion.section id="contact" className="classic-section" variants={sectionReveal} initial={calmMotion ? false : 'hidden'} whileInView="visible" viewport={{ once: false, amount: isMobile ? 0.08 : 0.15 }} transition={{ duration: calmMotion ? 0.22 : isMobile ? 0.46 : 0.94, ease: smoothEase }}>
         <SectionTitle title="Get In Touch" calmMotion={calmMotion} />
         <div className="classic-contact">
           <div className="classic-contact-info">
@@ -337,7 +338,7 @@ function Metric({ label, value, status, tone = '' }) {
 
 function SectionTitle({ title, subtitle, calmMotion = false }) {
   return (
-    <motion.div initial={calmMotion ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.45 }} transition={{ duration: calmMotion ? 0.18 : 0.58, ease: smoothEase }} className="classic-section-title">
+    <motion.div initial={calmMotion ? false : { opacity: 0, y: 44, scale: 0.92 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: false, amount: 0.45 }} transition={{ duration: calmMotion ? 0.18 : 0.74, ease: smoothEase }} className="classic-section-title">
       <h2>{title}</h2>
       {subtitle && <p>{subtitle}</p>}
     </motion.div>
@@ -347,20 +348,33 @@ function SectionTitle({ title, subtitle, calmMotion = false }) {
 function ClassicProjectCard({ project, index }) {
   const isMobile = useMediaQuery('(max-width: 760px)');
   const [activeImage, setActiveImage] = useState(0);
-  const images = project.images?.length ? project.images : [project.thumbnail];
+  const images = useMemo(() => (project.images?.length ? project.images : [project.thumbnail]), [project.images, project.thumbnail]);
   const hasGallery = images.length > 1;
 
   const moveImage = (direction) => {
     setActiveImage((current) => (current + direction + images.length) % images.length);
   };
 
+  useEffect(() => {
+    if (!hasGallery) return;
+    const nextSources = [
+      images[(activeImage + 1) % images.length],
+      images[(activeImage - 1 + images.length) % images.length],
+    ];
+    nextSources.forEach((src) => {
+      const image = new Image();
+      image.decoding = 'async';
+      image.src = src;
+    });
+  }, [activeImage, hasGallery, images]);
+
   return (
     <motion.article
-      initial={isMobile ? false : { opacity: 0, x: index % 2 ? 44 : -44, y: 42, scale: 0.94 }}
+      initial={calmInitial(isMobile, index)}
       whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      viewport={{ once: false, amount: 0.2 }}
-      transition={{ delay: isMobile ? 0 : Math.min(index * 0.055, 0.22), duration: isMobile ? 0.18 : 0.88, ease: smoothEase }}
-      whileHover={isMobile ? undefined : { y: -12, scale: 1.018 }}
+      viewport={{ once: false, amount: isMobile ? 0.12 : 0.2 }}
+      transition={{ delay: isMobile ? 0 : Math.min(index * 0.045, 0.16), duration: isMobile ? 0.38 : 0.92, ease: smoothEase }}
+      whileHover={isMobile ? undefined : { y: -14, scale: 1.022 }}
       className="classic-project-card"
     >
       <div className="browser-bar"><span /><span /><span /></div>
@@ -369,11 +383,12 @@ function ClassicProjectCard({ project, index }) {
           key={images[activeImage]}
           src={images[activeImage]}
           alt={`${project.title} screenshot ${activeImage + 1}`}
-          loading="lazy"
+          loading={index < 3 ? 'eager' : 'lazy'}
+          fetchPriority={index < 3 ? 'high' : 'auto'}
           decoding="async"
-          initial={isMobile ? false : { opacity: 0, scale: 1.035 }}
+          initial={isMobile ? { opacity: 0, scale: 1.015 } : { opacity: 0, scale: 1.045 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.42, ease: smoothEase }}
+          transition={{ duration: isMobile ? 0.26 : 0.44, ease: smoothEase }}
         />
         {hasGallery && (
           <>
@@ -424,6 +439,50 @@ function useMediaQuery(query) {
   }, [query]);
 
   return matches;
+}
+
+function calmInitial(isMobile, index) {
+  if (isMobile) {
+    return { opacity: 0, y: 28, scale: 0.965 };
+  }
+
+  return {
+    opacity: 0,
+    x: index % 2 ? 82 : -82,
+    y: 64,
+    scale: 0.9,
+  };
+}
+
+function useProjectImageWarmup(projectList) {
+  useEffect(() => {
+    const sources = [
+      ...new Set(projectList.flatMap((project) => [project.thumbnail, ...(project.images || []).slice(0, 2)]).filter(Boolean)),
+    ];
+    let cancelled = false;
+
+    const warm = () => {
+      sources.forEach((src) => {
+        if (cancelled) return;
+        const image = new Image();
+        image.decoding = 'async';
+        image.src = src;
+      });
+    };
+
+    const idleId = 'requestIdleCallback' in window
+      ? window.requestIdleCallback(warm, { timeout: 1800 })
+      : window.setTimeout(warm, 900);
+
+    return () => {
+      cancelled = true;
+      if ('cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      } else {
+        window.clearTimeout(idleId);
+      }
+    };
+  }, [projectList]);
 }
 
 function FloatingWhatsApp() {

@@ -343,19 +343,16 @@ body {
     linear-gradient(110deg, transparent 0 38%, rgba(var(--brand-cyan-rgb), 0.045) 48%, transparent 58%);
   opacity: 0.76;
   transform: translate3d(-1.5%, 0, 0);
-  animation: sectionGlow 32s ease-in-out infinite alternate;
 }
 
 .classic-section:nth-of-type(2n)::after {
   --glow-x: 78%;
   --glow-y: 28%;
-  animation-duration: 36s;
 }
 
 .classic-section:nth-of-type(3n)::after {
   --glow-x: 42%;
   --glow-y: 18%;
-  animation-duration: 40s;
 }
 
 @keyframes sectionGlow {
@@ -837,8 +834,11 @@ body {
 
 .classic-project-media {
   position: relative;
-  height: 13.8rem;
-  background: #0f172a;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(var(--brand-primary-rgb), 0.1), transparent 16rem),
+    #0f172a;
   overflow: hidden;
   contain: layout paint;
 }
@@ -850,17 +850,25 @@ body {
 
 .classic-project-media img {
   display: block;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
 
 .project-media {
   position: relative;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(var(--brand-primary-rgb), 0.1), transparent 18rem),
+    #0f172a;
 }
 
 .project-media img {
   display: block;
+  object-fit: contain !important;
+  object-position: center;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
@@ -1569,7 +1577,6 @@ body {
   .classic-project-media {
     height: auto;
     aspect-ratio: 16 / 10;
-    max-height: 12rem;
     contain: layout paint;
   }
 
@@ -1584,6 +1591,15 @@ body {
   .classic-project-media img {
     object-fit: contain;
     background: #0f172a;
+  }
+
+  .project-gallery-btn {
+    opacity: 0.92;
+    transform: translateY(-50%) scale(1);
+  }
+
+  .project-gallery-dots {
+    bottom: 0.55rem;
   }
 
   .classic-project-body {
