@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Download, ExternalLink, Mail, MapPin, Send } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, ExternalLink, Mail, MapPin, Send } from 'lucide-react';
 import { FaGithub, FaInstagram, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { SiLeetcode } from 'react-icons/si';
 import useTypingText from '../hooks/useTypingText.js';
@@ -11,8 +11,8 @@ import { skillCategories } from '../data/skills.js';
 const filters = ['All', 'Web Apps', 'Desktop', 'UI/UX'];
 const smoothEase = [0.16, 1, 0.3, 1];
 const sectionReveal = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 46, scale: 0.96 },
+  visible: { opacity: 1, y: 0, scale: 1 },
 };
 
 export default function Home() {
@@ -79,11 +79,11 @@ export default function Home() {
                     <motion.button
                       type="button"
                       key={skill.name}
-                      initial={calmMotion ? false : { opacity: 0, y: 22, scale: 0.98 }}
+                      initial={calmMotion ? false : { opacity: 0, y: 34, scale: 0.92 }}
                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
                       viewport={{ once: false, amount: 0.28 }}
-                      transition={{ delay: calmMotion ? 0 : Math.min(index * 0.025, 0.18), duration: calmMotion ? 0.16 : 0.48, ease: smoothEase }}
-                      whileHover={isMobile ? undefined : { y: -7, scale: 1.025 }}
+                      transition={{ delay: calmMotion ? 0 : Math.min(index * 0.035, 0.24), duration: calmMotion ? 0.16 : 0.62, ease: smoothEase }}
+                      whileHover={isMobile ? undefined : { y: -10, scale: 1.045 }}
                       className="classic-skill-card"
                     >
                       {skill.logo ? <img src={skill.logo} alt={skill.name} /> : <Icon />}
@@ -115,10 +115,10 @@ export default function Home() {
           {timeline.map((item, index) => (
             <motion.article
               key={item.title}
-              initial={calmMotion ? false : { opacity: 0, y: 28, scale: 0.985 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              initial={calmMotion ? false : { opacity: 0, x: index % 2 ? -46 : 46, y: 34, scale: 0.94 }}
+              whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
               viewport={{ once: false, margin: '-90px' }}
-              transition={{ delay: calmMotion ? 0 : Math.min(index * 0.055, 0.16), duration: calmMotion ? 0.18 : 0.72, ease: smoothEase }}
+              transition={{ delay: calmMotion ? 0 : Math.min(index * 0.065, 0.2), duration: calmMotion ? 0.18 : 0.82, ease: smoothEase }}
               className={`classic-timeline-item ${index % 2 ? 'left' : 'right'}`}
             >
               <span className="timeline-dot" />
@@ -346,19 +346,56 @@ function SectionTitle({ title, subtitle, calmMotion = false }) {
 
 function ClassicProjectCard({ project, index }) {
   const isMobile = useMediaQuery('(max-width: 760px)');
+  const [activeImage, setActiveImage] = useState(0);
+  const images = project.images?.length ? project.images : [project.thumbnail];
+  const hasGallery = images.length > 1;
+
+  const moveImage = (direction) => {
+    setActiveImage((current) => (current + direction + images.length) % images.length);
+  };
 
   return (
     <motion.article
-      initial={isMobile ? false : { opacity: 0, y: 30, scale: 0.985 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      initial={isMobile ? false : { opacity: 0, x: index % 2 ? 44 : -44, y: 42, scale: 0.94 }}
+      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
       viewport={{ once: false, amount: 0.2 }}
-      transition={{ delay: isMobile ? 0 : Math.min(index * 0.045, 0.16), duration: isMobile ? 0.18 : 0.76, ease: smoothEase }}
-      whileHover={isMobile ? undefined : { y: -8, scale: 1.01 }}
+      transition={{ delay: isMobile ? 0 : Math.min(index * 0.055, 0.22), duration: isMobile ? 0.18 : 0.88, ease: smoothEase }}
+      whileHover={isMobile ? undefined : { y: -12, scale: 1.018 }}
       className="classic-project-card"
     >
       <div className="browser-bar"><span /><span /><span /></div>
       <div className="classic-project-media">
-        <img src={project.thumbnail || project.images[0]} alt={`${project.title} screenshot`} loading="lazy" decoding="async" />
+        <motion.img
+          key={images[activeImage]}
+          src={images[activeImage]}
+          alt={`${project.title} screenshot ${activeImage + 1}`}
+          loading="lazy"
+          decoding="async"
+          initial={isMobile ? false : { opacity: 0, scale: 1.035 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.42, ease: smoothEase }}
+        />
+        {hasGallery && (
+          <>
+            <button type="button" className="project-gallery-btn prev" onClick={() => moveImage(-1)} aria-label={`Previous ${project.title} screenshot`}>
+              <ChevronLeft size={18} />
+            </button>
+            <button type="button" className="project-gallery-btn next" onClick={() => moveImage(1)} aria-label={`Next ${project.title} screenshot`}>
+              <ChevronRight size={18} />
+            </button>
+            <div className="project-gallery-dots" aria-label={`${project.title} screenshots`}>
+              {images.map((image, dotIndex) => (
+                <button
+                  type="button"
+                  key={image}
+                  className={dotIndex === activeImage ? 'active' : ''}
+                  onClick={() => setActiveImage(dotIndex)}
+                  aria-label={`Show screenshot ${dotIndex + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <div className="classic-project-body">
         <h3>{project.title}</h3>

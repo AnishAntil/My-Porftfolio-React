@@ -1,22 +1,59 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Layers } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink, Layers } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
 export default function ProjectCard({ project, featured = false }) {
-  const preview = project.thumbnail || project.images[0];
+  const [activeImage, setActiveImage] = useState(0);
+  const images = project.images?.length ? project.images : [project.thumbnail];
+  const hasGallery = images.length > 1;
+  const moveImage = (direction) => {
+    setActiveImage((current) => (current + direction + images.length) % images.length);
+  };
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 22 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 36, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: false, margin: '-80px' }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.56, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -8, scale: 1.01 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       className={`glass-card overflow-hidden ${featured ? 'lg:grid lg:grid-cols-[1.1fr_0.9fr]' : ''}`}
       id={project.id}
     >
       <div className="project-media">
-        <img src={preview} alt={`${project.title} screenshot`} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+        <motion.img
+          key={images[activeImage]}
+          src={images[activeImage]}
+          alt={`${project.title} screenshot ${activeImage + 1}`}
+          className="h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+          initial={{ opacity: 0, scale: 1.025 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+        />
+        {hasGallery && (
+          <>
+            <button type="button" className="project-gallery-btn prev" onClick={() => moveImage(-1)} aria-label={`Previous ${project.title} screenshot`}>
+              <ChevronLeft size={18} />
+            </button>
+            <button type="button" className="project-gallery-btn next" onClick={() => moveImage(1)} aria-label={`Next ${project.title} screenshot`}>
+              <ChevronRight size={18} />
+            </button>
+            <div className="project-gallery-dots">
+              {images.map((image, index) => (
+                <button
+                  type="button"
+                  key={image}
+                  className={index === activeImage ? 'active' : ''}
+                  onClick={() => setActiveImage(index)}
+                  aria-label={`Show screenshot ${index + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <div className="flex flex-col gap-5 p-6 md:p-8">
         <div>
