@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Download, ExternalLink, Mail, MapPin, Send } from 'lucide-react';
 import { FaGithub, FaInstagram, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { SiLeetcode } from 'react-icons/si';
@@ -17,6 +17,7 @@ const sectionReveal = {
 };
 
 export default function Home() {
+  const reduceMotion = useReducedMotion();
   const typed = useTypingText(['Full-Stack Developer', 'Web Developer', 'UI Designer', 'Computer Science Student']);
   const [filter, setFilter] = useState('All');
   const filteredProjects = useMemo(() => {
@@ -33,9 +34,9 @@ export default function Home() {
       <section id="about" className="classic-hero">
         <ParticleField />
         <div className="classic-hero-inner">
-          <motion.div initial={{ opacity: 0, x: -70, rotate: -3 }} animate={{ opacity: 1, x: 0, rotate: -2 }} transition={{ duration: 0.9, ease: 'easeOut' }} className="hero-photo-wrap">
+          <motion.div initial={reduceMotion ? false : { opacity: 0, x: -70, rotate: -3 }} animate={{ opacity: 1, x: 0, rotate: -2 }} transition={{ duration: 0.9, ease: 'easeOut' }} className="hero-photo-wrap">
             <div className="hero-photo-shape" />
-            <img src={profile.photo} alt="Anish Kumar" />
+            <img src={profile.photo} alt="Anish Kumar" fetchPriority="high" decoding="async" />
           </motion.div>
 
           <div className="classic-hero-copy">
@@ -64,7 +65,7 @@ export default function Home() {
         </a>
       </section>
 
-      <motion.section id="skills" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.18 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.section id="skills" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
         <SectionTitle title="Technical Skills" subtitle="💡 Click a skill card below to filter matching projects instantly!" />
         <div className="classic-skills">
           {skillCategories.map((category) => (
@@ -79,7 +80,7 @@ export default function Home() {
                       key={skill.name}
                       initial={{ opacity: 0, y: 50, rotateX: -18, scale: 0.78 }}
                       whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-                      viewport={{ once: false, amount: 0.35 }}
+                      viewport={{ once: true, amount: 0.35 }}
                       transition={{ delay: index * 0.045, duration: 0.55, type: 'spring', stiffness: 115 }}
                       whileHover={{ y: -14, rotate: -2, scale: 1.08 }}
                       className="classic-skill-card"
@@ -95,7 +96,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="projects" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.12 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.section id="projects" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
         <SectionTitle title="Featured Projects" />
         <div className="classic-filters">
           {filters.map((item) => (
@@ -107,7 +108,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="education" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.12 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.section id="education" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.12 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
         <SectionTitle title="Education & Experience" />
         <div className="classic-timeline">
           {timeline.map((item, index) => (
@@ -115,7 +116,7 @@ export default function Home() {
               key={item.title}
               initial={{ opacity: 0, x: index % 2 ? -140 : 140, rotate: index % 2 ? -3 : 3, scale: 0.88 }}
               whileInView={{ opacity: 1, x: 0, rotate: 0, scale: 1 }}
-              viewport={{ once: false, margin: '-120px' }}
+              viewport={{ once: true, margin: '-120px' }}
               transition={{ duration: 0.7, type: 'spring', stiffness: 90 }}
               className={`classic-timeline-item ${index % 2 ? 'left' : 'right'}`}
             >
@@ -131,7 +132,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="contact" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.15 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.section id="contact" className="classic-section" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}>
         <SectionTitle title="Get In Touch" />
         <div className="classic-contact">
           <div className="classic-contact-info">
@@ -326,7 +327,7 @@ function Metric({ label, value, status, tone = '' }) {
 
 function SectionTitle({ title, subtitle }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 45, scale: 0.92 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: false, amount: 0.6 }} transition={{ duration: 0.65, type: 'spring', stiffness: 105 }} className="classic-section-title">
+    <motion.div initial={{ opacity: 0, y: 45, scale: 0.92 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.6 }} transition={{ duration: 0.65, type: 'spring', stiffness: 105 }} className="classic-section-title">
       <h2>{title}</h2>
       {subtitle && <p>{subtitle}</p>}
     </motion.div>
@@ -334,21 +335,23 @@ function SectionTitle({ title, subtitle }) {
 }
 
 function ClassicProjectCard({ project, index }) {
+  const isMobile = useMediaQuery('(max-width: 760px)');
+
   return (
     <motion.article
       initial={{ opacity: 0, x: index % 2 ? 90 : -90, y: 55, rotate: index % 2 ? 3 : -3, scale: 0.9 }}
       whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
-      viewport={{ once: false, amount: 0.22 }}
+      viewport={{ once: true, amount: 0.22 }}
       transition={{ delay: index * 0.045, duration: 0.7, type: 'spring', stiffness: 90 }}
       whileHover={{ y: -18, scale: 1.025, rotate: index % 2 ? -0.8 : 0.8 }}
       className="classic-project-card"
     >
       <div className="browser-bar"><span /><span /><span /></div>
       <div className="classic-project-media">
-        <Swiper modules={[Navigation, Pagination, Autoplay]} pagination={{ clickable: true }} autoplay={{ delay: 2600, disableOnInteraction: false }} loop>
+        <Swiper modules={[Navigation, Pagination, Autoplay]} pagination={{ clickable: true }} autoplay={isMobile ? false : { delay: 3200, disableOnInteraction: false, pauseOnMouseEnter: true }} loop={!isMobile} speed={isMobile ? 250 : 450}>
           {project.images.map((src) => (
             <SwiperSlide key={src}>
-              <img src={src} alt={`${project.title} screenshot`} />
+              <img src={src} alt={`${project.title} screenshot`} loading="lazy" decoding="async" />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -366,6 +369,20 @@ function ClassicProjectCard({ project, index }) {
       </div>
     </motion.article>
   );
+}
+
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setMatches(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, [query]);
+
+  return matches;
 }
 
 function FloatingWhatsApp() {

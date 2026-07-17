@@ -698,6 +698,13 @@ body {
   scroll-margin-top: 5.5rem;
 }
 
+@supports (content-visibility: auto) {
+  .classic-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 900px;
+  }
+}
+
 .classic-section-title {
   margin-inline: auto;
   margin-bottom: 3.2rem;
@@ -1300,23 +1307,33 @@ body {
   }
 
   .one-page-shell::before {
-    inset: -35%;
-    filter: blur(12px);
-    opacity: 0.72;
-    animation-duration: 24s;
+    inset: -18%;
+    filter: none;
+    opacity: 0.34;
+    animation: none;
   }
 
   .one-page-shell::after {
-    opacity: 0.42;
-    animation-duration: 30s;
+    display: none;
   }
 
   .classic-hero::after,
   .classic-section::after {
     background:
-      radial-gradient(circle at 28% 16%, rgba(var(--brand-primary-rgb), 0.11), transparent 15rem),
-      radial-gradient(circle at 78% 72%, rgba(var(--brand-mint-rgb), 0.07), transparent 14rem);
-    animation-duration: 24s;
+      radial-gradient(circle at 28% 16%, rgba(var(--brand-primary-rgb), 0.08), transparent 14rem),
+      radial-gradient(circle at 78% 72%, rgba(var(--brand-mint-rgb), 0.05), transparent 13rem);
+    animation-duration: 32s;
+    opacity: 0.58;
+  }
+
+  .terminal-card,
+  .leetcode-card,
+  .classic-project-card,
+  .classic-info-card,
+  .classic-form,
+  .classic-timeline-item > div {
+    backdrop-filter: none;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
   }
 
   .classic-hero {
@@ -1483,6 +1500,14 @@ body {
     max-height: 12rem;
   }
 
+  .classic-project-card:hover,
+  .classic-btn:hover,
+  .classic-social a:hover,
+  .classic-info-card:hover {
+    transform: none;
+    filter: none;
+  }
+
   .classic-project-media img {
     object-fit: contain;
     background: #0f172a;
@@ -1583,6 +1608,7 @@ body {
     width: 3.15rem;
     height: 3.15rem;
     font-size: 1.55rem;
+    animation-duration: 4s;
   }
 
   .classic-footer-bottom {
@@ -1591,10 +1617,6 @@ body {
   }
 
   .particle-field {
-    opacity: 0.36;
-  }
-
-  .particle-field span:nth-child(n + 13) {
     display: none;
   }
 }
